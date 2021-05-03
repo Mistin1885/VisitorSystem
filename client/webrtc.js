@@ -70,6 +70,7 @@ document.getElementById('canvas').hidden = true;
 loginBtn.addEventListener("click", function (event) { 
   name = usernameInput.value; 
   usernameShow.innerHTML = "Hello, "+name;
+  document.getElementById('showHint').innerHTML = "Hello, " + name;
   if (name.length > 0) { 
      send({ 
         type: "login", 
@@ -321,6 +322,13 @@ function gotMessageFromServer(message) {
       handleLeave();
       alert("Remote has disconnected !");
     break;
+    case "close":
+      if(data.reqFrom == connectedUser) {
+        handleLeave();
+        alert("Remote has disconnected !");
+      }
+      refreshAllAvailableUsers(data.user_status);
+    break;
 
     default: 
       break; 
@@ -455,3 +463,12 @@ function handleLeave() {
   //yourConn = null;
 };
 
+window.onbeforeunload =  function(event) {
+  handleLeave();
+  send({
+    type: "close",
+    reqFrom: name
+  });
+  serverConnection.close();
+  return '';
+};

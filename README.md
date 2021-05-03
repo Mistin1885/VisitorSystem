@@ -20,14 +20,9 @@ With the server running, open a recent version of Firefox, Chrome, or Safari and
 Recent versions of Chrome require secure websockets for WebRTC. Thus, this example utilizes HTTPS. Included is a self-signed certificate that must be accepted in the browser for the example to work.
 
 ---
-[original source](https://github.com/sauravkp/WebRTC-nodejs-video-call-demo)
+[Base on WebRTC](https://github.com/sauravkp/WebRTC-nodejs-video-call-demo)
 
-## Improve
-- hang up send offer error / stream missing
-- notify when remote disconnected
-- send local snap img to remote while calling
-- add client identify
-- when on call, switch remote show as video or img
-- refresh online user immediately
-- add timeout function
-- add user on call detect function
+## Function
+- visitor call to employee.
+- receive visitor-photo when visitor calling.
+- employee can switch visitor-site shows as video/audio at any time.

@@ -215,6 +215,14 @@ wss.on('connection', function(ws) {
                notifyUsers();
             }  
          break;
+
+         case "close":
+            console.log("close from ", data.reqFrom);
+
+            delete user_status[data.reqFrom];
+            delete allUsers[data.reqFrom];
+            notifyUsers();
+         break;
      
          default: 
             sendTo(ws, { 
@@ -227,6 +235,7 @@ wss.on('connection', function(ws) {
     //wss.broadcast(message);
    });
 
+   
    ws.on("close", function() { 
       if(ws.name) { 
          delete users[ws.name]; 
@@ -243,7 +252,8 @@ wss.on('connection', function(ws) {
             }  
          } 
       } 
-   });  
+   }); 
+   
 
    //ws.send("Hello world"); 
 });

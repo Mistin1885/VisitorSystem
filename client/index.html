@@ -8,9 +8,37 @@
     
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+    <script>
+      function startTime(){
+        var today = new Date();
+        var year = today.getFullYear();
+        var month = today.getMonth()+1;
+        var day = today.getDate();
+        var hh = today.getHours();
+        var mm = today.getMinutes();
+        var ss = today.getSeconds();
+        
+        month = checkTime(month);
+        day = checkTime(day);
+        mm = checkTime(mm);
+        ss = checkTime(ss);
+
+        var str = year+"/"+month+"/"+day+"  "+hh+":"+mm+":"+ss;
+        document.getElementById('clock').innerHTML = str;
+        var timeoutId = setTimeout(startTime, 500);
+    }
+
+    function checkTime(i) {
+      if(i<10) {
+          i = "0" + i;
+      }
+      return i;
+    }
+    </script>
   </head>
 
-  <body>
+  <body onload="startTime()">
     <div id="myName">
       <input type="text" id="usernameInput" placeholder="My name">
       <form id="form_identify" name="form_identify">
@@ -19,11 +47,12 @@
       </form>
       <input type="button" id="loginBtn" value="Save"></input>
     </div>
-    <div>
-      <h3><span id="allUsers"></span></h3>
-    </div>
     <div id="otherElements">
+      <div id="clock"></div>
       <div id="dv_employee">
+        <div>
+          <h3><span id="allUsers"></span></h3>
+        </div>
         <div id="controlVid">
           <p>RemoteVideo:</p>
           <button id="turnOnVid" class="btn-success btn">On</button> 
@@ -42,10 +71,10 @@
         </div>
       </div>
       <div id="dv_visitor">
-        <b><span id="showLocalUserName"></span></b>
-        <video id="localVideo" autoplay muted style="width:40%;"></video>
-        <b><span id="showRemoteUserName"></span></b>
-        <img id="remoteImg" width="40%">
+        <div>
+          <h2 id="showHint">---</h2>
+        </div>
+        <video id="localVideo" autoplay muted style="width:25%;"></video>
         <p id="show_IfCalling"></p>
       </div>
       <canvas id="canvas" width="640" height="480"></canvas>
