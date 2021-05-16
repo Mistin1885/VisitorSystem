@@ -42,7 +42,6 @@ document.getElementById('otherElements').hidden = true;
 var usernameInput = document.querySelector('#usernameInput'); 
 var usernameShow = document.querySelector('#showLocalUserName'); 
 var showAllUsers = document.querySelector('#allUsers');
-var remoteUsernameShow = document.querySelector('#showRemoteUserName');
 var loginBtn = document.querySelector('#loginBtn');
 var callToUsernameInput = document.querySelector('#callToUsernameInput');
 var callBtn = document.querySelector('#callBtn'); 
@@ -56,13 +55,10 @@ document.getElementById('canvas').hidden = true;
 document.getElementById('dv_remoteVideo').hidden = true;
 document.getElementById('dv_remoteImg').hidden = false;
 
-var turnOnVidBtn = document.getElementById('turnOnVid');
-var turnOffVidBtn = document.getElementById('turnOffVid');
+var btn_controlVid = document.getElementById('btn_controlVid');
 
 var dv_callWho = document.getElementById('callWho');
 
-//setting localImgage
-document.getElementById('localImg').src = 'https://tnimage.s3.hicloud.net.tw/photos/2019/12/20/1576828719-5dfc7f2f96d3e.jpg';
 
 document.getElementById('remoteSnapImg').hidden = true;
 document.getElementById('canvas').hidden = true;
@@ -149,17 +145,21 @@ $('#title').click(function(){
     dv_callWho.hidden = true;
 });
 
-turnOffVidBtn.addEventListener("click", function () {
-  document.getElementById('dv_remoteVideo').hidden = true;
-  document.getElementById('dv_remoteImg').hidden = false;
+var iov = 0; //0: Img ; 1: Video
+btn_controlVid.addEventListener("click", function() {
+  if(iov == 1){
+    document.getElementById('dv_remoteVideo').hidden = true;
+    document.getElementById('dv_remoteImg').hidden = false;
 
-  document.getElementById('remoteImg').src = '' + remoteImgUrl;
-});
+    document.getElementById('remoteImg').src = '' + remoteImgUrl;
 
-turnOnVidBtn.addEventListener("click", function() {
-  document.getElementById('dv_remoteVideo').hidden = false;
-  document.getElementById('dv_remoteImg').hidden = true;
+    iov = 0;
+  }else{
+    document.getElementById('dv_remoteVideo').hidden = false;
+    document.getElementById('dv_remoteImg').hidden = true;
 
+    iov = 1;
+  }
 });
 
 function stopStreamedVideo(stream) {
@@ -268,19 +268,19 @@ function callOut() {
       console.log("Error when creating an offer",error)
   });
   document.getElementById('show_IfCalling').innerHTML = '-- calling --';
-  document.getElementById('callOngoing').style.display = 'block';
+  document.getElementById('visitor_callOngoing').style.display = 'block';
   document.getElementById('callInitiator').style.display = 'none';
 
   callTimeout = window.setTimeout(( () => timeoutCancel() ), 12000); //12s timeout -> cancel calling
 }
 
 function gotRemoteSnapImg(snapUrl) {
-  document.getElementById('remoteSnapImg').hidden = false;
+  document.getElementById('remoteImg').hidden = false;
   document.getElementById('canvas').hidden = true;
 
   remoteImgUrl = snapUrl;
 
-  var img = document.getElementById('remoteSnapImg');
+  var img = document.getElementById('remoteImg');
   img.src = '' + snapUrl;
 
 }
@@ -361,12 +361,15 @@ function send(msg) {
 
 /* START: Create an answer for an offer i.e. send message to server */
 function handleOffer(offer, name) { 
+  document.getElementById('dv_gotCall').hidden = false;
   document.getElementById('callInitiator').style.display = 'none';
   document.getElementById('callReceiver').style.display = 'block';
+  document.getElementById('controlVid').style.display = 'none';
 
   createPeerConnection();
   
   connectedUser = name; 
+  document.getElementById('callFrom').innerHTML = '來自 ' + name;
   /* Call answer functionality starts */
   answerBtn.addEventListener("click", function () { 
     //connectedUser = name; 上移
@@ -384,9 +387,9 @@ function handleOffer(offer, name) {
     }, function (error) { 
       alert("Error when creating an answer"); 
     });
-    document.getElementById('dv_employee').hidden = false;
-    document.getElementById('remoteSnapImg').hidden = true;
+    document.getElementById('remoteImg').hidden = false;
     document.getElementById('remoteImg').src = '' + remoteImgUrl;
+    document.getElementById('controlVid').style.display = 'block';
     document.getElementById('callReceiver').style.display = 'none';
     document.getElementById('callOngoing').style.display = 'block';
   });
@@ -429,6 +432,7 @@ function handleAnswer(answer) {
   window.clearTimeout(callTimeout);
   document.getElementById('canvas').hidden = true;
   document.getElementById('show_IfCalling').innerHTML = '-- on call --';
+  document.getElementById('visitor_callOngoing').style.display = 'block';
   
 };
 
@@ -462,13 +466,18 @@ function handleLeave() {
   var signallingState1 = yourConn.signalingState;
   console.log('connection state after',connectionState1)
   console.log('signalling state after',signallingState1)
-  document.getElementById('remoteSnapImg').hidden = true;
+  document.getElementById('dv_gotCall').hidden = true;
+  document.getElementById('dv_remoteVideo').hidden = true;
+  document.getElementById('dv_remoteImg').hidden = false;
+  iov = 0;
   document.getElementById('remoteImg').src = '';
   document.getElementById('canvas').hidden = true;
-  document.getElementById('dv_employee').hidden = true;
   document.getElementById('show_IfCalling').innerHTML = '---';
+  document.getElementById('callFrom').innerHTML = '---';
   document.getElementById('callOngoing').style.display = 'none';
+  document.getElementById('visitor_callOngoing').style.display = 'none';
   document.getElementById('callReceiver').style.display = 'none';
+  document.getElementById('controlVid').style.display = 'none';
   document.getElementById('callInitiator').style.display = 'block';
   //yourConn = null;
 };

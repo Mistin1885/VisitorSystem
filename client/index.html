@@ -25,7 +25,7 @@
         width: 230px;
         background-color: lightgreen;
       }
-      #title{
+      .title{
         background-color: navy;
       }
       #clock{
@@ -50,6 +50,12 @@
         bottom: 30px;
         right: 0px;
         left: 0px;
+      }
+      #dv_gotCall{
+        background-color: lightgray;
+        margin: auto;
+        text-align: center;
+        width: 70%;
       }
     </style>
     <script>
@@ -102,23 +108,42 @@
     <div id="otherElements">
       <!--Start: Client-Employee -->
       <div id="dv_employee">
+        <div class="title">
+          <h1>OO公司訪客系統</h1>
+        </div>
         <div>
           <h3><span id="allUsers"></span></h3>
         </div>
-        <div id="controlVid">
-          <p>RemoteVideo:</p>
-          <button id="turnOnVid" class="btn-success btn">On</button> 
-          <button id="turnOffVid" class="btn-danger btn">Off</button> 
-        </div>
-        <b><span id="showLocalUserName"></span></b>
-        <div>
-          <img id="localImg" width="40%">
-          <b><span id="showRemoteUserName"></span></b>
-          <div id="dv_remoteVideo">
-            <video id="remoteVideo" autoplay style="width:40%;"></video>
+        
+        <h3 id="showLocalUserName"></h3>
+        <div id="dv_gotCall" hidden="true">
+          <br>
+          <div id="remote_info">
+            <h3>OO公司 - Name</h3>
+            <h5 id="callFrom"></h5>
           </div>
-          <div id="dv_remoteImg">
-            <img id="remoteImg" width="40%">
+          <br />
+          <div id="remote_photo">
+            <div id="dv_remoteVideo">
+              <video id="remoteVideo" autoplay style="width:70%;"></video>
+            </div>
+            <div id="dv_remoteImg">
+              <img id="remoteImg" width="70%">
+            </div>
+          </div>
+          <br />
+          <div id="control_btn">
+            <div id="controlVid" style="display: none;">
+              <button id="btn_controlVid">Image/Video</button>
+            </div>
+            <br />
+            <div id='callReceiver' style="display: none;">
+              <button id = "answerBtn" class = "btn-success btn">Answer</button> 
+              <button id = "declineBtn" class = "btn-danger btn">Decline</button> 
+            </div>
+            <div id='callOngoing' style="display: none;">
+              <button id = "hangUpBtn" class = "btn-danger btn">Hang Up</button>
+            </div>
           </div>
         </div>
       </div>
@@ -126,7 +151,7 @@
       
       <!--Start: Client-Visitor -->
       <div id="dv_visitor">
-        <div id="title">
+        <div class="title" id="title">
           <h1>OO公司訪客系統</h1>
         </div>
         <br>
@@ -163,7 +188,7 @@
                 <div id='callInitiator'>
                   <button id = "callBtn" class = "btn-success btn">立即聯繫</button> 
                 </div>
-                <div id='callOngoing' style="display: none;">
+                <div id='visitor_callOngoing' style="display: none;">
                   <button id = "hangUpBtn" class = "btn-danger btn">Hang Up</button>
                 </div>
               </td>
@@ -173,22 +198,8 @@
       </div>
       <!--End: Client-Visitor -->
 
-      <canvas id="canvas" width="640" height="480"></canvas>
-      <img id="remoteSnapImg" width="40%">
-      
-      <br />
-      <div id='callReceiver' style="display: none;">
-
-        <button id = "answerBtn" class = "btn-success btn">Answer</button> 
-        <button id = "declineBtn" class = "btn-danger btn">Decline</button> 
-      </div>
-      <!--
-      <div id='callOngoing' style="display: none;">
-        <button id = "hangUpBtn" class = "btn-danger btn">Hang Up</button>
-      </div>
-      -->
-        <!-- <input type="button" id="start" onclick="start(true)" value="Start Video"></input>
-        <input type="button" id="Stop" onclick="stop(true)" value="Stop Video"></input> -->
+      <canvas id="canvas" width="640" height="480" hidden="true"></canvas>
+      <img id="remoteSnapImg" width="40%" hidden="true">
 
   </div>
   <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
