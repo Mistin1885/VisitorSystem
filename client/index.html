@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta charset="utf-8">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 
     <!-- jQuery library -->
@@ -8,7 +9,49 @@
     
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-
+    <style>
+      h1{
+        color: white;
+      }
+      #login-page{
+        margin: auto;
+        margin-top: 20%;
+        margin-bottom: 15%;
+      }
+      #myName{
+        text-align: center;
+        margin: auto;
+        height: 230px;
+        width: 230px;
+        background-color: lightgreen;
+      }
+      #title{
+        background-color: navy;
+      }
+      #clock{
+        text-align: right;
+        font-size: x-large;
+      }
+      .td_call{
+        border: 1px solid #000;
+        vertical-align: middle;
+        text-align: center;
+      }
+      #td_hello{
+        border: 1px solid #000;
+        background-color: lightgray;
+      }
+      #dv_video{
+        text-align: right;
+        margin-right: 10px;
+      }
+      #call_block{
+        position: absolute;
+        bottom: 30px;
+        right: 0px;
+        left: 0px;
+      }
+    </style>
     <script>
       function startTime(){
         var today = new Date();
@@ -39,16 +82,25 @@
   </head>
 
   <body onload="startTime()">
-    <div id="myName">
-      <input type="text" id="usernameInput" placeholder="My name">
-      <form id="form_identify" name="form_identify">
-        <label><input type="radio" name="identify" value="visitor" required>visitor</label>
-        <label><input type="radio" name="identify" value="employee">employee</label>
-      </form>
-      <input type="button" id="loginBtn" value="Save"></input>
+    <!--Start: Login-Page -->
+    <div id="login-page">
+      <div id="myName">
+        <br />
+        <h1>訪客系統</h1>
+        <br />
+        <input type="text" id="usernameInput" placeholder="User Name">
+        <form id="form_identify" name="form_identify">
+          <label><input type="radio" name="identify" value="visitor" required>visitor</label>
+          <label><input type="radio" name="identify" value="employee">employee</label>
+        </form>
+        <br />
+        <input type="button" id="loginBtn" value="Login"></input>
+      </div>
     </div>
+    <!--End: Login-Page -->
+    
     <div id="otherElements">
-      <div id="clock"></div>
+      <!--Start: Client-Employee -->
       <div id="dv_employee">
         <div>
           <h3><span id="allUsers"></span></h3>
@@ -70,36 +122,73 @@
           </div>
         </div>
       </div>
+      <!--End: Client-Employee -->
+      
+      <!--Start: Client-Visitor -->
       <div id="dv_visitor">
-        <div>
-          <h2 id="showHint">---</h2>
+        <div id="title">
+          <h1>OO公司訪客系統</h1>
         </div>
-        <video id="localVideo" autoplay muted style="width:25%;"></video>
-        <p id="show_IfCalling"></p>
+        <br>
+        <div id="callWho" hidden="true">
+          <input id = "callToUsernameInput" 
+          type = "text" placeholder = "username to call"/>
+        </div>
+        <div id="clock"></div>
+        <div id="info_block">
+          <table>
+            <tr>
+              <td width="50%" id="td_hello">
+                <h2 id="showHint">---</h2><br>
+                <h3>請站在鏡頭前, 以便偵測您的體溫狀態</h3>
+              </td>
+              <td width="50%">
+                <div id="dv_video">
+                  <video id="localVideo" autoplay muted style="width: 75%;"></video>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </div>
+
+        <div id="call_block">
+          <table width="100%" height="160">
+            <tr>
+              <td width="60%" class="td_call" id="call_block_td1">
+                <h3>已預約 10:00 商務會議</h3>
+                <h5>- 請按右側按鈕聯繫受訪者 -</h5>
+              </td>
+              <td width="40%" class="td_call" id="call_block_td2">
+                <h3 id="show_IfCalling">---</h3>
+                <div id='callInitiator'>
+                  <button id = "callBtn" class = "btn-success btn">立即聯繫</button> 
+                </div>
+                <div id='callOngoing' style="display: none;">
+                  <button id = "hangUpBtn" class = "btn-danger btn">Hang Up</button>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </div>
       </div>
+      <!--End: Client-Visitor -->
+
       <canvas id="canvas" width="640" height="480"></canvas>
       <img id="remoteSnapImg" width="40%">
       
       <br />
-      <div id='callInitiator'>
-          <input id = "callToUsernameInput" 
-          type = "text" placeholder = "username to call"/> 
-          <br/>
-          <button id = "callBtn" class = "btn-success btn">Call</button> 
-          <!-- <button id = "hangUpBtn" class = "btn-danger btn">Hang Up</button>  -->
-      </div>
       <div id='callReceiver' style="display: none;">
 
         <button id = "answerBtn" class = "btn-success btn">Answer</button> 
         <button id = "declineBtn" class = "btn-danger btn">Decline</button> 
-    </div>
-    <div id='callOngoing' style="display: none;">
-      
-      <button id = "hangUpBtn" class = "btn-danger btn">Hang Up</button>
-
-  </div>
-      <!-- <input type="button" id="start" onclick="start(true)" value="Start Video"></input>
-      <input type="button" id="Stop" onclick="stop(true)" value="Stop Video"></input> -->
+      </div>
+      <!--
+      <div id='callOngoing' style="display: none;">
+        <button id = "hangUpBtn" class = "btn-danger btn">Hang Up</button>
+      </div>
+      -->
+        <!-- <input type="button" id="start" onclick="start(true)" value="Start Video"></input>
+        <input type="button" id="Stop" onclick="stop(true)" value="Stop Video"></input> -->
 
   </div>
   <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>

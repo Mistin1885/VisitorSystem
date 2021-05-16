@@ -1,6 +1,5 @@
 var localVideo;
 var localStream;
-var myName;
 var remoteVideo;
 var yourConn;
 var uuid;
@@ -60,6 +59,8 @@ document.getElementById('dv_remoteImg').hidden = false;
 var turnOnVidBtn = document.getElementById('turnOnVid');
 var turnOffVidBtn = document.getElementById('turnOffVid');
 
+var dv_callWho = document.getElementById('callWho');
+
 //setting localImgage
 document.getElementById('localImg').src = 'https://tnimage.s3.hicloud.net.tw/photos/2019/12/20/1576828719-5dfc7f2f96d3e.jpg';
 
@@ -105,7 +106,7 @@ function handleLogin(success,allUsers) {
     catchAllAvailableUsers(allUsers);
     localVideo = document.getElementById('localVideo');
     remoteVideo = document.getElementById('remoteVideo');
-    document.getElementById('myName').hidden = true;
+    document.getElementById('login-page').hidden = true;
     document.getElementById('otherElements').hidden = false;
 
     for(var i=0; i<form.identify.length; i++){
@@ -120,7 +121,7 @@ function handleLogin(success,allUsers) {
       document.getElementById('dv_employee').hidden = true;
     } else{
       document.getElementById('dv_visitor').hidden = true;
-      document.getElementById('dv_employee').hidden = true;
+      document.getElementById('dv_employee').hidden = false;
 
       constraints = {
         video: false,
@@ -138,6 +139,15 @@ function handleLogin(success,allUsers) {
   }
 }
 /* END: Register user for first time i.e. Prepare ground for webrtc call to happen */
+
+
+//control CallToUsernameInput shows
+$('#title').click(function(){
+  if(dv_callWho.hidden == true)
+    dv_callWho.hidden = false;
+  else
+    dv_callWho.hidden = true;
+});
 
 turnOffVidBtn.addEventListener("click", function () {
   document.getElementById('dv_remoteVideo').hidden = true;
@@ -261,7 +271,7 @@ function callOut() {
   document.getElementById('callOngoing').style.display = 'block';
   document.getElementById('callInitiator').style.display = 'none';
 
-  callTimeout = window.setTimeout(( () => timeoutCancel() ), 8000); //8s timeout -> cancel calling
+  callTimeout = window.setTimeout(( () => timeoutCancel() ), 12000); //12s timeout -> cancel calling
 }
 
 function gotRemoteSnapImg(snapUrl) {
@@ -456,7 +466,7 @@ function handleLeave() {
   document.getElementById('remoteImg').src = '';
   document.getElementById('canvas').hidden = true;
   document.getElementById('dv_employee').hidden = true;
-  document.getElementById('show_IfCalling').innerHTML = '';
+  document.getElementById('show_IfCalling').innerHTML = '---';
   document.getElementById('callOngoing').style.display = 'none';
   document.getElementById('callReceiver').style.display = 'none';
   document.getElementById('callInitiator').style.display = 'block';
