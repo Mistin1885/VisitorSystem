@@ -14,6 +14,7 @@ var allAvailableUsers;
 var all_user_status;
 
 var callTimeout;
+var checkinTimeout;
 
 var remoteImgUrl;
 
@@ -56,9 +57,7 @@ document.getElementById('dv_remoteVideo').hidden = true;
 document.getElementById('dv_remoteImg').hidden = false;
 
 var btn_controlVid = document.getElementById('btn_controlVid');
-
 var dv_callWho = document.getElementById('callWho');
-
 
 document.getElementById('remoteSnapImg').hidden = true;
 document.getElementById('canvas').hidden = true;
@@ -67,7 +66,7 @@ document.getElementById('canvas').hidden = true;
 loginBtn.addEventListener("click", function (event) { 
   name = usernameInput.value; 
   usernameShow.innerHTML = "Hello, "+name;
-  document.getElementById('showHint').innerHTML = "Hello, " + name;
+  document.getElementById('showHint').innerHTML = "Welcome, " + name;
   if (name.length > 0) { 
      send({ 
         type: "login", 
@@ -143,6 +142,18 @@ $('#title').click(function(){
     dv_callWho.hidden = false;
   else
     dv_callWho.hidden = true;
+});
+
+var checkData = document.getElementById('checkData');
+checkData.addEventListener("click", function () {
+  goto_checkinPage();
+  checkinTimeout = window.setTimeout(( () => goto_homePage() ), 30000); //30s timeout -> go to home-page
+});
+
+var btn_home = document.getElementById('btn_home');
+btn_home.addEventListener("click", function () {
+  goto_homePage();
+  window.clearTimeout(checkinTimeout);
 });
 
 var iov = 0; //0: Img ; 1: Video
@@ -224,6 +235,7 @@ callBtn.addEventListener("click", function () {
 });
 /* END: Initiate call to any user i.e. send message to server */
 
+
 function callOut() {
   var callToUsername = document.getElementById('callToUsernameInput').value;
 
@@ -271,7 +283,9 @@ function callOut() {
   document.getElementById('visitor_callOngoing').style.display = 'block';
   document.getElementById('callInitiator').style.display = 'none';
 
+  window.clearTimeout(checkinTimeout);
   callTimeout = window.setTimeout(( () => timeoutCancel() ), 12000); //12s timeout -> cancel calling
+  
 }
 
 function gotRemoteSnapImg(snapUrl) {
@@ -307,6 +321,7 @@ function gotMessageFromServer(message) {
      //when somebody wants to call us 
     case "offer": 
       console.log('inside offer')
+      document.getElementById('callFrom').innerHTML = '來自 ' + name;
       handleOffer(data.offer, data.name);
       alert("Receive a call from " + data.name);
     break; 
@@ -412,7 +427,7 @@ function timeoutCancel(){
     reqFrom: name
   });
   handleLeave();
-  alert("8s timeout")
+  alert("12s timeout")
 }
 
 function gotRemoteStream(event) {
@@ -479,6 +494,8 @@ function handleLeave() {
   document.getElementById('callReceiver').style.display = 'none';
   document.getElementById('controlVid').style.display = 'none';
   document.getElementById('callInitiator').style.display = 'block';
+
+  checkinTimeout = window.setTimeout(( () => goto_homePage() ), 30000); //30s timeout -> go to home-page
   //yourConn = null;
 };
 
@@ -491,3 +508,21 @@ window.onbeforeunload =  function(event) {
   serverConnection.close();
   return '';
 };
+
+function goto_checkinPage(){
+  document.getElementById('checkHint').hidden = true;
+  document.getElementById('check_block').hidden = true;
+
+  document.getElementById('checkinHint').hidden = false;
+  document.getElementById('call_block').hidden = false;
+  document.getElementById('initHint').hidden = false;
+}
+
+function goto_homePage(){
+  document.getElementById('checkinHint').hidden = true;
+  document.getElementById('call_block').hidden = true;
+  document.getElementById('initHint').hidden = true;
+
+  document.getElementById('checkHint').hidden = false;
+  document.getElementById('check_block').hidden = false;
+}

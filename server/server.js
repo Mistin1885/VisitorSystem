@@ -203,17 +203,17 @@ wss.on('connection', function(ws) {
             console.log("Decline from", data.name); 
             var conn = users[data.name]; 
             //conn.otherName = null; 
-      
+            
+            user_status['e1'] = true;
             //notify the other user so he can disconnect his peer connection 
             if(conn != null) { 
                sendTo(conn, { 
                   type: "decline" 
                });
-
-               changeUserStatus(data.reqFrom, "free");
-               changeUserStatus(data.name, "free");
-               notifyUsers();
-            }  
+            }
+            changeUserStatus(data.reqFrom, "free");
+            changeUserStatus(data.name, "free");
+            notifyUsers();
          break;
 
          case "close":

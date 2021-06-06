@@ -28,6 +28,13 @@
       .title{
         background-color: navy;
       }
+      .check_img{
+        width: 150px;
+        height: 100px;
+      }
+      .p_check{
+        color: lime;
+      }
       #clock{
         text-align: right;
         font-size: x-large;
@@ -45,6 +52,10 @@
         text-align: right;
         margin-right: 10px;
       }
+      #detectHint{
+        text-align: right;
+        margin-right: 100px;
+      }
       #call_block{
         position: absolute;
         bottom: 30px;
@@ -56,6 +67,9 @@
         margin: auto;
         text-align: center;
         width: 70%;
+      }
+      #initHint{
+        text-align: center;
       }
     </style>
     <script>
@@ -156,31 +170,82 @@
         </div>
         <br>
         <div id="callWho" hidden="true">
-          <input id = "callToUsernameInput" 
-          type = "text" placeholder = "username to call"/>
+          <div style="display: inline;">
+            <input id = "callToUsernameInput" 
+            type = "text" placeholder = "username to call"/>
+          </div>
+          <div style="display: inline;">
+            <button id="checkData">確認資料</button>
+          </div>
         </div>
         <div id="clock"></div>
         <div id="info_block">
           <table>
             <tr>
               <td width="50%" id="td_hello">
-                <h2 id="showHint">---</h2><br>
-                <h3>請站在鏡頭前, 以便偵測您的體溫狀態</h3>
+                <div id="checkHint">
+                  <h2>歡迎蒞臨 OO公司</h2>
+                  <h3>請在鏡頭前出示您的預約QRcode</h3>
+                </div>
+                <div id="checkinHint" hidden="true">
+                  <h2 id="showHint">---</h2><br>
+                  <h3>您已完成報到手續</h3>
+                  <h3>防疫期間為您我的健康，請全程配戴口罩</h3>
+                </div>
+                
               </td>
               <td width="50%">
                 <div id="dv_video">
                   <video id="localVideo" autoplay muted style="width: 75%;"></video>
                 </div>
+                <h4 id="detectHint">請將臉部置於鏡頭範圍內</h4>
               </td>
             </tr>
           </table>
         </div>
-
-        <div id="call_block">
+        <div id="check_block" style="text-align: center;">
+          <table width="100%" height="200">
+            <tr>
+              <!--預約資料-->
+              <td width="25%" class="td_check"> 
+                <div>
+                  <img class="check_img" src="https://ak.picdn.net/shutterstock/videos/1030885892/thumb/5.jpg">
+                  <p class="p_check">"OK"</p>
+                  <img class="check_img" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiiOwLshDLbR0KYTx4rl6iXa6-n_piJuSXuA&usqp=CAU">
+                </div>
+              </td>
+              <!--體溫-->
+              <td width="25%" class="td_check"> 
+                <div>
+                  <img class="check_img" src="https://ak.picdn.net/shutterstock/videos/1030885892/thumb/5.jpg">
+                  <p class="p_check">"36.6"</p>
+                  <img class="check_img" src="https://cdn4.iconfinder.com/data/icons/nature-21/367/nature_180-512.png">
+                </div>
+              </td>
+              <!--口罩-->
+              <td width="25%" class="td_check"> 
+                <div>
+                  <img class="check_img" src="https://ak.picdn.net/shutterstock/videos/1030885892/thumb/5.jpg">
+                  <p class="p_check">"OK"</p>
+                  <img class="check_img" src="https://static.thenounproject.com/png/577778-200.png">
+                </div>
+              </td>
+              <!--防疫表單-->
+              <td width="25%" class="td_check"> 
+                <div>
+                  <img class="check_img" src="https://ak.picdn.net/shutterstock/videos/1030885892/thumb/5.jpg">
+                  <p class="p_check">"OK"</p>
+                  <img class="check_img" src="https://static.thenounproject.com/png/87088-200.png">
+                </div>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div id="call_block" hidden="true">
           <table width="100%" height="160">
             <tr>
               <td width="60%" class="td_call" id="call_block_td1">
-                <h3>已預約 10:00 商務會議</h3>
+                <h3>已預約 今日 10:00 商務會議</h3>
                 <h5>- 請按右側按鈕聯繫受訪者 -</h5>
               </td>
               <td width="40%" class="td_call" id="call_block_td2">
@@ -194,6 +259,15 @@
               </td>
             </tr>
           </table>
+          <br>
+          <div id="initHint" hidden="true">
+            <div style="display: inline-block;">
+              <p>30秒內無動作，將會自動回到初始頁面</p>
+            </div>
+            <div style="display: inline-block;">
+              <button id="btn_home">立即返回</button>
+            </div>
+          </div>
         </div>
       </div>
       <!--End: Client-Visitor -->
